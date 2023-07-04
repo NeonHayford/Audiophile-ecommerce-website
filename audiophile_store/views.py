@@ -1,12 +1,10 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.generics import  CreateAPIView, DestroyAPIView
 from rest_framework.response import Response
-from .serializers import ProductSerializer, product_data
-from .models import *
 from rest_framework.serializers import ValidationError
-# from django.http import Http404
-from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_200_OK
-from rest_framework.decorators import api_view
+from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+from .serializers import ProductSerializer, product_data, CartSerializer
+from .models import Product, Cart
 
 # Create your views here.
 class ProductDataView(APIView):
@@ -18,36 +16,16 @@ class ProductDataView(APIView):
         return Response(serializer.data)
 
 
-# @api_view(['POST'])
-# def add_product(request):
-#     item = ProductSerializer(data=request.data)
-#     # if Product.objects.filter(id=item.id).exists():
-#     #     return ValidationError('Product already exists')
-#     if item.is_valid():
-#         item.save()
-#     else:
-#         # return Http404
-#         return Response({'error': 'you did not enter the product Credientials...'}, status = HTTP_404_NOT_FOUND)
-class CreateProductView(APIView):
-    def post(self, request):
-        item = ProductSerializer(data=request.data)
-        # if Product.objects.filter(id=item.id).exists():
-        #     return ValidationError('Product already exists')
-        if item.is_valid():
-            product = item.save() 
-            print(product)
-            return Response(
-                {
-                    "id": product.id,
-                    'name': product.name,
-                    'description': product.description,
-                    'Release_date': product.Release_date
-                },
-                status = HTTP_200_OK
-            )
+class CreateProductView(CreateAPIView):
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
+
+
+class DeleteProductView(APIView):
+    def delete(self, request ,pk):
+        item = Product.objects.get(id=pk)
+        if not item:
+            return Response(status=HTTP_404_NOT_FOUND)
         else:
-            # return Http404
-            return Response({'error': 'you did not enter the product Credientials...'}, status = HTTP_404_NOT_FOUND)
-        
-        
-    # def delete(self, request):
+            item.delete()
+        return Response('Data successfully deleted', status=HTTP_204_NO_CONTENT)
