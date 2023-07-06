@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from audiophile_store.models import  Cart, Cart_Add
+from audiophile_store.models import  Cart, Cart_item
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -7,3 +7,10 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ('cartid',)
+
+
+class CartProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart_item
+        fields = '__all__'
+        # depth = 4

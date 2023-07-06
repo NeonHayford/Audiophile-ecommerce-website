@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
-from rest_framework.generics import  CreateAPIView, DestroyAPIView
+from rest_framework.generics import  CreateAPIView, UpdateAPIView, ListCreateAPIView
 from rest_framework.response import Response
-from rest_framework.serializers import ValidationError
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 from .serializers import ProductSerializer, ProductImageSerializer, product_data
 from .models import Product, Product_images
@@ -10,20 +9,28 @@ from .models import Product, Product_images
 class ProductDataView(APIView):
     def get(self, request, format=None):
         product = Product.objects.all()
-        print(product)
         serializer=product_data(product, many=True)
-
         return Response(serializer.data)
+    
 
-class CreateProductImageView(CreateAPIView):
+# Product Image
+class CreateProductImageView(ListCreateAPIView):
+    serializer_class = ProductImageSerializer
+    queryset = Product_images.objects.all()
+
+class UpdateProductImageView(UpdateAPIView):
     serializer_class = ProductImageSerializer
     queryset = Product_images.objects.all()
 
 
-class CreateProductView(CreateAPIView):
+#Product
+class CreateProductView(ListCreateAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
+class UpdateProductView(UpdateAPIView):
+    serializer_class= ProductSerializer
+    queryset=Product_images.objects.all()
 
 class DeleteProductView(APIView):
     def get (self, request, pk):

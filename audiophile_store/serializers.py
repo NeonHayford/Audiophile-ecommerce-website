@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Product_images, Cart
+from .models import Product, Product_images
 
 class product_data(serializers.ModelSerializer):
     class Meta:
@@ -22,11 +22,6 @@ class ProductSerializer(serializers.ModelSerializer):
         verbose_name_plural = 'Products'
 
 
-class CartSerializer(serializers.ModelSerializer):
-    cartid = serializers.UUIDField(read_only=True)
-    class Meta:
-        model = Cart
-        fields = ('cartid',)
 
 
 
