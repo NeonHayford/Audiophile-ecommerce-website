@@ -1,9 +1,9 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView, UpdateAPIView, DestroyAPIView, ListAPIView
-from .serializers import CartSerializer, CartProductSerializer
+from rest_framework.generics import ListCreateAPIView, UpdateAPIView, RetrieveDestroyAPIView, DestroyAPIView, ListAPIView
+from .serializers import CartSerializer, CartProductSerializer , CustomSerializer
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
-from audiophile_store.models import Cart, Cart_item
+from audiophile_store.models import Cart, Cart_item , Customer_Address
 
 # Create your views here.
 class CartView(APIView):
@@ -55,21 +55,19 @@ class DeleteCartProductView(DestroyAPIView):
     serializer_class = CartProductSerializer
     queryset = Cart_item.objects.all()
 
+class CustomerAddressView(ListAPIView):
+    serializer_class = CustomSerializer
+    queryset = Customer_Address.objects.all()
 
-# class CartProductView(APIView):
-#     def get(self, request):
-#         try:
-#             added_to_cart = Cart_item.objects.all()
-#             print(added_to_cart)
-#             serializer = CartProductSerializer(added_to_cart, many=True)
-#             return Response(serializer.data)
-#         except Cart_item.DoesNotExist:
-#             return Response({'error': 'content does not exist'},status=HTTP_204_NO_CONTENT)
-    
-#     def post(self, request):
-#         serializer = CartProductSerializer(data = request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-    
+class CreateCustomerAddressView(ListCreateAPIView):
+    serializer_class = CustomSerializer
+    queryset = Customer_Address.objects.all()
+
+
+class UpdateCustomerAddressView(UpdateAPIView):
+    serializer_class = CustomSerializer
+    queryset = Customer_Address.objects.all()
+
+class DeleteCustomerAddressView(DestroyAPIView):
+    serializer_class = CustomSerializer
+    queryset = Customer_Address.objects.all()
