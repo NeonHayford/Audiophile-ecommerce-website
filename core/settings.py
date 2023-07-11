@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'drf_spectacular',
     'audiophile_store',
     'cart'
 ]
@@ -51,6 +52,21 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Audiophile E-Commerce Website API Documentation',
+    'DESCRIPTION': 'Challenge is to build out application progrgamming interface for multi-page e-commerce website',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
+
 
 ROOT_URLCONF = 'core.urls'
 
@@ -124,3 +140,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Paystack for the payment request fields
+# PAYSTACK_SECRET_KEY = 'sk_test_b24cba2abcb0c7220e2d7acef8ad7f4e3cad04d9'
+# PAYSTACK_PUBLIC_KEY = 'pk_test_154759a64b0ab7bfa60955875abb694864780fa7'
