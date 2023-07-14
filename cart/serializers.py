@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from audiophile_store.models import Cart, Cart_item
 from decimal import Decimal
-from drf_spectacular.utils import extend_schema_field
+
 class CartSerializer(serializers.ModelSerializer):
     cartid = serializers.UUIDField(read_only=True)
+    
     class Meta:
         model = Cart
         fields = ('cartid',)
@@ -13,10 +14,10 @@ class CartSerializer(serializers.ModelSerializer):
 
 class CartProductSerializer(serializers.ModelSerializer):
     total_price = serializers.SerializerMethodField('get_total_price_with_vat',  read_only=True)
+
     class Meta:
         model = Cart_item
         fields = '__all__'
-        # depth = 4
 
     def get_total_amount(self, obj):
         # calculate the total cost of the items in the cart
@@ -29,8 +30,7 @@ class CartProductSerializer(serializers.ModelSerializer):
         VAT = self.get_total_amount(obj) * Decimal(0.20)
         return VAT + additional_price
     
-    # @extend_schema_field(field=total_price)
-    # @property
+
     def get_total_price_with_vat(self, obj) -> str:
         # calculate VAT plus total cost of the items in the cart 
         return self.get_vat_on_total_price(obj) + self.get_total_amount(obj)
