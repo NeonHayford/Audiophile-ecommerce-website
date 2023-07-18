@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Product, Product_images
+from .models import Product, ProductImage
 
-class product_data(serializers.ModelSerializer):
+class ProductDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
@@ -9,12 +9,11 @@ class product_data(serializers.ModelSerializer):
 
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product_images
+        model = ProductImage
         fields = '__all__'
         verbose_name = 'Product image'
 
 class ProductSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Product
         fields = '__all__'

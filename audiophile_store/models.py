@@ -1,5 +1,6 @@
 from django.db import models
 from uuid import uuid4
+import os
 
 # Create your models here.
 class Category(models.Model):
@@ -10,14 +11,24 @@ class Category(models.Model):
         return self.type
 
 
-class Product_images(models.Model):
-    main_image = models.ImageField(upload_to='product_images/main/')
-    first_image = models.ImageField(upload_to='product_images/')
-    second_image = models.ImageField(upload_to='product_images/')
-    third_image = models.ImageField(upload_to='product_images/')
+class ProductImage(models.Model):
+    mainimage = models.ImageField(upload_to='main/')
+    firstimage = models.ImageField(upload_to='')
+    secondimage = models.ImageField(upload_to='')
+    thirdimage = models.ImageField(upload_to='')
 
     def __str__(self):
-        return f'{self.main_image}'
+        return f'{self.mainimage}'
+    
+    def delete(self, *args, **kwargs):
+        # Delete image files associated with image fields
+        image_fields = [field for field in self._meta.fields if isinstance(field, models.ImageField)]
+        for field in image_fields:
+            file_path = getattr(self, field.name).path
+            print(file_path)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        super().delete(*args, **kwargs)
 
 
 class Product(models.Model):
@@ -25,10 +36,10 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     price = models.DecimalField(max_digits=8, decimal_places=2, default=9999.99)
-    features = models.TextField(blank =True, default='product features description...')
     description = models.TextField(blank = True, default='product description...')
+    features = models.TextField(blank =True, default='product features description...')
     Release_date = models.DateField(auto_now=True)
-    image = models.ForeignKey(Product_images, on_delete=models.CASCADE)
+    image = models.ForeignKey(ProductImage, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.name}'
@@ -39,7 +50,7 @@ class Cart(models.Model):
     date = models.DateField(auto_now_add=True)
     
 
-class Cart_item(models.Model):
+class CartItem(models.Model):
     quantity = models.IntegerField(default=0)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='products')

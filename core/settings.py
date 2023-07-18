@@ -138,10 +138,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 MEDIA_URL = '/product_images/'
-MEDIA_ROOT  = os.path.join(BASE_DIR, 'product_images/main/')
+MEDIA_ROOT  = os.path.join(BASE_DIR, 'product_images/')
 
-MEDIA_URL_1 = '/product_images/main/'
-MEDIA_ROOT_1  = os.path.join(BASE_DIR, 'product_images/main/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
