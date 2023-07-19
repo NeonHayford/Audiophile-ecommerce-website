@@ -133,10 +133,13 @@ class DeleteProductView(APIView):
             return Response({'error':'Product image(s) does not exist...'}, status= HTTP_404_NOT_FOUND)
     
     def delete(self, request, pk):
-        image = Product.objects.filter(id = pk)
-        if image:
-            image.delete()
-            return Response({'status':'the product image(s) were deleted...'}, status = HTTP_200_OK)
-        return Response({'status':'the product images does not exist...'}, status= HTTP_404_NOT_FOUND)
+        try:
+            image = Product.objects.filter(id = pk)
+            if image:
+                image.delete()
+                return Response({'status':'the product image(s) were deleted...'}, status = HTTP_200_OK)
+            return Response({'status':'the product images does not exist...'}, status= HTTP_404_NOT_FOUND)
+        except Product.DoesNotExist:
+            return Response({'status':'the product images does not exist...'}, status=HTTP_500_INTERNAL_SERVER_ERROR)
 
 
