@@ -91,9 +91,6 @@ class UpdateCartProductView(APIView):
 
 
 class DeleteCartProductView(APIView):
-    def get(self, request):
-        pass
-
     def delete(self, request, pk, cartid):
         try:
             cartitem = CartItem.objects.get(cart_id = cartid, id = pk)
@@ -105,6 +102,5 @@ class DeleteCartProductView(APIView):
             return Response({'status':'Product do not exist in the cart...'}, status= HTTP_404_NOT_FOUND)
         except Exception as e: 
             return Response({'status': str(e)}, status= HTTP_500_INTERNAL_SERVER_ERROR)
-        # pass
 
 
