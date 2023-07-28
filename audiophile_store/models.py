@@ -56,5 +56,7 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='products')
     created = models.DateField(auto_now=True)
     modified = models.DateField(auto_now_add=True)
+    shipping = models.BooleanField(default=False)
+
 
 
