@@ -32,15 +32,11 @@ class CartProductSerializer(serializers.ModelSerializer):
         return VAT
     
 
-    def get_total_price_with_vat(self, obj, shipcost) -> str:
+    def get_total_price_with_vat(self, obj) -> str:
         # calculate VAT plus total cost of the items in the cart
         cost = self.get_vat_on_total_price(obj) + self.get_total_amount(obj) 
-        value = CartItem.objects.get(shipping = shipcost)
-        if value.shipping == True:
+        if obj.shipping:
             ad_cost=cost + 50
         else:
             ad_cost=cost
         return round(ad_cost, 2)
-
-
-    #   2257.6  

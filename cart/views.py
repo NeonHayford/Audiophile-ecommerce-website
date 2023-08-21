@@ -52,14 +52,14 @@ class CreateCartProductView(APIView):
         return Response(serializer.data)
     
     def post(self, request, pk):
-        try:
+        # try:
             serializer = CartProductSerializer(data = request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status = HTTP_200_OK)
             return Response(serializer.errors)
-        except Exception as e:
-            return Response({'status': str(e)}, status = HTTP_500_INTERNAL_SERVER_ERROR)
+        # except Exception as e:
+        #     return Response({'status': str(e)}, status = HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UpdateCartProductView(APIView):
